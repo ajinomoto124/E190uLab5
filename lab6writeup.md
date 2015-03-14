@@ -1,16 +1,14 @@
-# E190uLab5
-## Lab5 Write-Up
+# E190uLab6
+## Lab6 Write-Up
 #### Introduction:
-This lab was an introduction to OpenCV and Cuda on the Jetson TK1
+The goal of this lab was to use our motion detection from lab 5 as a control scheme in a game of Pong.
 
 #### Design & Testing Methodology:
-I adopted the hand detection algorithm we were given to work a little more consistently.  This code was written using the C implementation of OpenCV.  Initially the hand detection did not work very well and picked up the door in the room as the "hand" a large amount of the time.  After going into GIMP and checking some HSV values, I was able to modify the color range that the program detected as a "hand" so it was able to pickup my hand more often. After lowering the number of fingers the program checked down to 4 instead of 5, it improved the accuracy considerably.  I added some printf statements that checked whether the hand y position had changed by a value of 15 in either direction to detect up and down movement.  Once I was satisfied with the program's ability to detect vertical hand movement, I set about to implement the functions on the gpu.  To do this, I first had to convert the C specific OpenCV code to its equivalent C++ version.  Then it was just a matter of calling the cv functions on the gpu.
-
-
+We were given a Python implementation of Pong as a reference.  Rather than piping code from C to Python I decided to use the cv objects to draw Pong on top of the video display of the hand detection.  Instead of programming an opponent as typical in pong, I simply created a "goal" on the opposite side of the player that the player can score points in.  The score is added to when the player hits the ball in the goal and subtracted from when the player misses the ball and lets it hit the wall behind the player.  In addition to the up and down movement being controlled by the player's hand moving up and down, if the player moves a certain amount to the right, the ball is sped up.  Similarly, if the player moves the same distance to the left, the ball slows down to half speed.
 
 #### Results and Discussion
-Modifying the hand detection program to consistently detect hands was a fairly successful venture.  However, I ran into difficulty when porting my code from C to C++ and then onto the GPU.  I was able to edit the Makefile to use a cpp version of my c file but my code was unable to compile on the gpu/C++ version so I was forced to revert to an earlier C version.
+The implementation of Pong using OpenCV objects worked out surprisingly well. While the motion controls don't work perfectly with the game, they do work consistently enough to make the game playable.
 
 #### Conclusions
-Time spend on lab: about 10 hours.
-It was a little unclear to me as to whether we were supposed to start with the OpenCV samples or the hand detection code we were initially given.  I did not realize until it was too late that I would have to convert code in C++ in order to use the GPU processes and I spent a large amount of time trying and failing at doing so.
+Time spend on lab: about 8 hours.
+I was unclear as to whether we were supposed to use the Python implementation of the game we were given or not.  Thus, I spent a long time trying to get my C code to work with the Python code when the easier solution was to just add pong to the hand detection code from the beginning.
