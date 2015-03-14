@@ -372,11 +372,21 @@ void detectMove(struct ctx *ctx){
 		if(paddleY < height - 100){		
 			paddleY += 40;
 		}
+	else if(ctx->lastLocX - ctx->hand_center.x < -40){
+
+		balldirx *= 0.5;
+		balldiry *= 0.5;
     }
-    else{
+    else if(ctx->lastLocX - ctx->hand_center.x < 40){
+
+		balldirx *= 2.0;
+		balldiry *= 2.0;
+    }     
+        else{
         //printf("Stationary\n");    
     }
        ctx->lastLocY = ctx->hand_center.y;
+       ctx->lastLocX = ctx->hand_center.x;
     //printf("X: %d Y: %d\n", ctx->hand_center.x, ctx->hand_center.y);
 }
 
